@@ -6,9 +6,8 @@ O projeto se trata de um blog que vai gerenciar as postagen de projetos no portf
 
 ## 🛠️ Construído com
 
-* [Node.js](https://nodejs.org/en/) - Plataforma utilizada para o desenvolvimento do Backend;
-* [Handlebars](https://nodejs.org/en/) - Gerenciador de templates usado para controle de páginas
-* [Javascript](https://developer.mozilla.org/pt-BR/docs/Web/JavaScript) - Utilizado para desenvolver funcionalidades
+* [Vue.js](https://vuejs.org/) - Utilizado para construção do Frontend da aplicação.
+* [Typescript](https://www.typescriptlang.org/) - Linguagem principal utilizada para desenvolver a aplicação.
 
 ## ✒️ Autores
 
