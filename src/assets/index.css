@@ -21,4 +21,7 @@
     .inputContainer:not(:last-child) {
         @apply mb-2
     }
+    .submitButton:hover + i {
+        @apply left-32 opacity-100
+    }
 }
