@@ -72,6 +72,7 @@
             </div>
             <div class="flex justify-center mt-5">
                 <button class="bg-blue-600 text-white tex w-2/3 h-14 uppercase font-semibold hover:bg-blue-800">Criar postagem</button>
+                <i class="pi pi-plus text-white border-2 border-white"></i>
             </div>
         </form>
     </main>

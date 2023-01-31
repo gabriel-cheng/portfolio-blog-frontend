@@ -102,7 +102,7 @@
                         <i class="pi absolute left-3 bottom-1.5 text-loginTxtColor pi-lock"></i>
                     </div>
                     <div class="w-full flex justify-center relative ">
-                        <input class="bg-purple-600 w-2/3 h-14 text-white uppercase cursor-pointer hover:bg-purple-800" type="submit" value="Conectar-se">
+                        <input class="bg-purple-600 w-2/3 h-14 active:bg-purple-900 text-white uppercase cursor-pointer hover:bg-purple-700" type="submit" value="Conectar-se">
                         <i class="pi pi-sign-in absolute top-5 left-32 text-white text-xs"></i>
                     </div>
                 </form>
