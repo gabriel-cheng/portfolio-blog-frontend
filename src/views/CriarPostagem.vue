@@ -57,7 +57,7 @@
                     descricao: descricao,
                     deploy: deploy,
                     repositorio: repositorio,
-                    linkedin: linkedin
+                    postLinkedin: linkedin
                 })
             });
 
