@@ -142,9 +142,6 @@
     function setCheckedAttrb(id: string) {
         postId = id;
         const post = allPosts.value.find(el => el._id == postId);
-        // const inputs = (document.querySelector("#css") as HTMLInputElement);
-
-        // console.log(adicionarAtributoChecked("css"));
 
         if(!post) {
             return "Postagem não encontrada!";
