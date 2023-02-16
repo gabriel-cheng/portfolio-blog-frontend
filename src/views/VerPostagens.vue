@@ -17,7 +17,7 @@
         postLinkedin: string
     }
 
-    const ferramentas = [
+    const ferramentasDisponiveis = [
         "html",
         "css",
         "javascript",
@@ -64,7 +64,7 @@
         }
     }
 
-    async function updatePost() {
+    async function updatePost(id: string) {
         const titulo = (document.querySelector("#titulo") as HTMLInputElement).value;
         const video = (document.querySelector("#video") as HTMLInputElement).value;
         const linkedin = (document.querySelector("#linkedin") as HTMLInputElement).value;
@@ -74,10 +74,18 @@
         const descricao = (document.querySelector("#descricao") as HTMLTextAreaElement).value;
         const form = (document.querySelector("#postForm") as HTMLFormElement);
         const post = allPosts.value.find(el => el._id == postId);
+        const arr = [];
+        const toolsUpdated: string[] = [];
 
         if (!post) {
             throw new Error("Post não encontrado");
         }
+
+        for(const i of ferramentasDisponiveis) {
+            arr.push(returnAllCheckboxes(i));
+        }
+
+        arr.filter(el => el.checked == true).forEach(el => toolsUpdated.push(el.value));
 
         try {
             await fetch(`http://localhost:5000/posts/update/${post._id}`, {
@@ -88,7 +96,7 @@
                 },
                 body: JSON.stringify({
                     titulo: titulo,
-                    ferramentas: ferramentasUsadas.value,
+                    ferramentas: toolsUpdated,
                     status: status,
                     videoUrl: video,
                     descricao: descricao,
@@ -97,15 +105,16 @@
                     postLinkedin: linkedin
                 })
             })
-            .then(e => e.json())
-            .then((e) => {
-                console.log(e);
-            })
+            .then(e => e.json());
 
             form.reset();
         } catch(err) {
             console.log({update_post_err: err});
         }
+    }
+
+    function returnAllCheckboxes(postId: string) {
+        return (document.querySelector(`#${postId}`) as HTMLInputElement);
     }
 
     function modalController(id: string) {
@@ -233,7 +242,7 @@
                 <div id="modalOverlay" class="z-50 w-full h-screen opacity-0 bg-modalBackground absolute left-0 -top-full duration-500">
                     <div class="max-w-2700 w-full h-screen flex items-center justify-center">
                         <div class="flex items-center w-2/4 h-screen">
-                            <form @submit.prevent="updatePost();" class="relative w-full max-w-3xl flex flex-col border-2 border-black p-10 rounded-xl bg-white" enctype="multipart/form-data" id="postForm">
+                            <form @submit.prevent="updatePost(post._id);" class="relative w-full max-w-3xl flex flex-col border-2 border-black p-10 rounded-xl bg-white" enctype="multipart/form-data" id="postForm">
                                 <div @click="closeModal();" class="flex justify-center items-center w-10  h-10 absolute -top-4 -right-4 bg-purple-800 hover:bg-purple-700 active:bg-purple-900 cursor-pointer rounded-full">
                                     <i class="pi pi-times text-white"></i>
                                 </div>
@@ -264,8 +273,8 @@
                                 <h1 class="text-3xl">Ferramentas</h1>
                                 <div class="flex justify-cente">
                                     <div class="flex flex-wrap flex-col w-full h-28">
-                                        <div id="ferramentasContainer" v-for="(ferramenta, index) in ferramentas" :key="index" class="mr-10">
-                                            <input ref="a" class="checkbox mr-1 cursor-pointer" type="checkbox" :name="ferramenta" :id="ferramenta" :value="ferramenta" v-model="ferramentasUsadas">
+                                        <div id="ferramentasContainer" v-for="(ferramenta, index) in ferramentasDisponiveis" :key="index" class="mr-10">
+                                            <input class="checkbox mr-1 cursor-pointer" type="checkbox" :name="ferramenta" :id="ferramenta" :value="ferramenta">
                                             <label :for="ferramenta">{{ ferramenta }}</label>
                                         </div>
                                     </div>
