@@ -64,7 +64,7 @@
         }
     }
 
-    async function updatePost(id: string) {
+    async function updatePost() {
         const titulo = (document.querySelector("#titulo") as HTMLInputElement).value;
         const video = (document.querySelector("#video") as HTMLInputElement).value;
         const linkedin = (document.querySelector("#linkedin") as HTMLInputElement).value;
@@ -239,7 +239,7 @@
                 <div id="modalOverlay" class="z-50 w-full h-screen opacity-0 bg-modalBackground absolute left-0 -top-full duration-500">
                     <div class="max-w-2700 w-full h-screen flex items-center justify-center">
                         <div class="flex items-center w-2/4 h-screen">
-                            <form @submit.prevent="updatePost(post._id);" class="relative w-full max-w-3xl flex flex-col border-2 border-black p-10 rounded-xl bg-white" enctype="multipart/form-data" id="postForm">
+                            <form @submit.prevent="updatePost();" class="relative w-full max-w-3xl flex flex-col border-2 border-black p-10 rounded-xl bg-white" enctype="multipart/form-data" id="postForm">
                                 <div @click="closeModal();" class="flex justify-center items-center w-10  h-10 absolute -top-4 -right-4 bg-purple-800 hover:bg-purple-700 active:bg-purple-900 cursor-pointer rounded-full">
                                     <i class="pi pi-times text-white"></i>
                                 </div>
