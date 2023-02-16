@@ -83,6 +83,23 @@
 
         return;
     }
+
+    function showPassword() {
+        const showPass = document.querySelector('.showPass');
+        const passInput = (document.querySelector('.passInput') as HTMLInputElement);
+
+        if(showPass?.classList.contains('pi-eye-slash')) {
+            passInput.type = "text";
+            showPass?.classList.remove('pi-eye-slash');
+        } else {
+            passInput.type = "password";
+            showPass?.classList.add('pi-eye-slash');
+        }
+
+        showPass?.classList.toggle('pi-eye');
+
+        return true;
+    }
 </script>
 
 <template>
@@ -98,8 +115,9 @@
                         <i class="pi absolute left-3 bottom-1.5 text-loginTxtColor pi-user"></i>
                     </div>
                     <div class="relative mb-10">
-                        <input class="w-full outline-0 pl-9 border-b-2 border-gray-300 placeholder:text-loginTxtColor" type="password" name="senha" id="senha" placeholder="Informe sua senha" required>
+                        <input class="passInput w-full outline-0 pl-9 border-b-2 border-gray-300 placeholder:text-loginTxtColor" type="password" name="senha" id="senha" placeholder="Informe sua senha" required>
                         <i class="pi absolute left-3 bottom-1.5 text-loginTxtColor pi-lock"></i>
+                        <i @click="showPassword()" class="showPass pi pi-eye-slash cursor-pointer absolute right-5"></i>
                     </div>
                     <div class="w-full flex justify-center relative ">
                         <input class="submitButton bg-purple-600 w-2/3 h-14 active:bg-purple-900 text-white uppercase cursor-pointer hover:bg-purple-700" type="submit" value="Conectar-se">

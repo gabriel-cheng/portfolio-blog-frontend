@@ -7,7 +7,7 @@
         @apply uppercase h-20 text-center z-2 duration-100 grow-0 w-full opacity-0 py-7 pl-4 inline-block;
     }
     header:hover .navigation {
-        @apply opacity-100 duration-1000
+        @apply opacity-100 duration-1000;
     }
     .input {
         @apply border-b-2 border-black w-full mb-4 bg-transparent text-black placeholder:text-black outline-none px-3;
@@ -22,6 +22,6 @@
         @apply mb-2
     }
     .submitButton:hover + i {
-        @apply left-32 opacity-100
+        @apply left-32 opacity-100;
     }
 }

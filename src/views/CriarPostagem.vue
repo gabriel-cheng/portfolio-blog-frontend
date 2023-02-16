@@ -9,10 +9,16 @@
         "pi-times", "text-popupRedBorder", "Erro", "Erro: a postagem não foi criada."
     ];
 
-    const arr: string[] = [];
-    const ferramentasUsadas = ref(arr);
+    const titulo = ref('');
+    const ferramentas = ref([]);
+    const status = ref('');
+    const videoUrl = ref('');
+    const descricao = ref('');
+    const deploy = ref('');
+    const repositorio = ref('');
+    const postLinkedin = ref('');
 
-    const ferramentas = [
+    const ferramentasDisponiveis = [
         "html",
         "css",
         "javascript",
@@ -32,65 +38,47 @@
     ];
 
     async function sendPostToDatabase() {
-        const titulo = (document.querySelector("#titulo") as HTMLInputElement).value;
-        const video = (document.querySelector("#video") as HTMLInputElement).value;
-        const linkedin = (document.querySelector("#linkedin") as HTMLInputElement).value;
-        const deploy = (document.querySelector("#deploy") as HTMLInputElement).value;
-        const repositorio = (document.querySelector("#repositorio") as HTMLInputElement).value;
-        const status = (document.querySelector("#status") as HTMLSelectElement).value;
-        const descricao = (document.querySelector("#descricao") as HTMLTextAreaElement).value;
+        const file = (document.querySelector("#file") as HTMLInputElement).files;
         const form = (document.querySelector("#postForm") as HTMLFormElement);
         const token = sessionStorage.getItem("token");
-
-        try {
-            const request = await fetch('http://localhost:5000/posts/create', {
-                method: 'POST',
-                headers: {
-                    "Content-Type": "application/json",
-                    "authorization": `bearer ${token}`
-                },
-                body: JSON.stringify({
-                    titulo: titulo,
-                    ferramentas: ferramentasUsadas.value,
-                    status: status,
-                    videoUrl: video,
-                    descricao: descricao,
-                    deploy: deploy,
-                    repositorio: repositorio,
-                    postLinkedin: linkedin
-                })
-            });
-
-            if(request.status == 201) {
-                setPopupStyle(negativeStyles, positiveStyles);
-            } else setPopupStyle(positiveStyles, negativeStyles);
-
-            showPopup();
-            await sendPictureToDatabase();
-            form.reset();
-        } catch(err) {
-            console.log({create_new_post_error: err});
-        }
-    }
-
-    async function sendPictureToDatabase() {
-        const token = sessionStorage.getItem("token");
-        const file = (document.querySelector("#file") as HTMLInputElement).files;
         const formData = new FormData();
 
-        formData.append("name", file[0].name);
+        if(!file) {
+            console.log("Arquivo não reconhecido!");
+
+            return;
+        }
+
+
+        formData.append("titulo", titulo.value);
+        ferramentas.value.forEach(el => formData.append("ferramentas", el));
+        formData.append("status", status.value);
+        formData.append("videoUrl", videoUrl.value);
+        formData.append("descricao", descricao.value);
+        formData.append("deploy", deploy.value);
+        formData.append("repositorio", repositorio.value);
+        formData.append("postLinkedin", postLinkedin.value);
+        formData.append("pictureName", file[0].name);
         formData.append("file", file[0]);
 
         try {
-            await fetch('http://localhost:5000/pictures/save', {
+            const request = await fetch('http://localhost:5000/posts/create', {
                 method: 'POST',
                 headers: {
                     "authorization": `bearer ${token}`
                 },
                 body: formData
             })
+            .then(e => e.json())
+
+            if(request.message == "Postagem criada com sucesso!") {
+                setPopupStyle(negativeStyles, positiveStyles);
+            } else setPopupStyle(positiveStyles, negativeStyles);
+
+            showPopup();
+            form.reset();
         } catch(err) {
-            console.log({save_picture_error: err});
+            console.log({create_new_post_error: err});
         }
     }
 
@@ -125,8 +113,9 @@
     function showPopup() {
         const popupContainer = (document.querySelector("#popupBackground") as HTMLDivElement);
 
-        popupContainer.classList.remove("opacity-0", "top-0");
-        popupContainer.classList.add("opacity-full", "top-10");
+        for(const i of ["!opacity-100", "!top-10"]) {
+            popupContainer.classList.toggle(i);
+        }
 
         setTimeout(closePopup, 7000);
 
@@ -136,8 +125,9 @@
     function closePopup() {
         const popupContainer = (document.querySelector("#popupBackground") as HTMLDivElement);
 
-        popupContainer.classList.remove("opacity-full", "top-10");
-        popupContainer.classList.add("opacity-0", "top-0");
+        for(const i of ["!opacity-100", "!top-10"]) {
+            popupContainer.classList.toggle(i);
+        }
 
         return;
     }
@@ -147,23 +137,23 @@
     <main class="w-full max-w-2700 flex justify-center items-center h-screen bg-gradient-to-br from-purple-900 to-purple-400">
         <form @submit.prevent="sendPostToDatabase();" class="w-full max-w-3xl flex flex-col border-2 border-black p-10 rounded-xl" enctype="multipart/form-data" id="postForm">
             <div class="inputContainer">
-                <input required class="input w-full font-semibold text-xl normal-case" type="text" name="titulo" id="titulo" placeholder="Informe o título da postagem">
+                <input required class="input w-full font-semibold text-xl normal-case" type="text" name="titulo" id="titulo" placeholder="Informe o título da postagem" v-model="titulo">
             </div>
             <div class="inputContainer">
-                <input required class="input" type="text" name="video" id="video" placeholder="Informe a URL do video de exemplo">
+                <input required class="input" type="text" name="video" id="video" placeholder="Informe a URL do video de exemplo" v-model="videoUrl">
                 <div class="w-full">
                     <input required type="file" class="w-full pb-1 mb-4 border-b-2 border-black cursor-pointer" id="file">
                 </div>
             </div>
             <div class="inputContainer">
-                <input required class="input" type="text" name="linkedin" id="linkedin" placeholder="Informe o link da postagem no Linkedin">
-                <input required class="input" type="text" name="deploy" id="deploy" placeholder="Informe o link de deploy">
+                <input required class="input" type="text" name="linkedin" id="linkedin" placeholder="Informe o link da postagem no Linkedin" v-model="postLinkedin">
+                <input required class="input" type="text" name="deploy" id="deploy" placeholder="Informe o link de deploy" v-model="deploy">
             </div>
             <div class="inputContainer">
-                <input required class="input" type="text" name="repositorio" id="repositorio" placeholder="Informe o link do repositório">
+                <input required class="input" type="text" name="repositorio" id="repositorio" placeholder="Informe o link do repositório" v-model="repositorio">
                 <div class="flex w-full justify-between">
                     <label for="">Status</label>
-                    <select name="status" id="status" class="border-b-2 h-8 px-4 cursor-pointer bg-transparent outline-none">
+                    <select required name="status" id="status" class="border-b-2 h-8 px-4 cursor-pointer bg-transparent outline-none" v-model="status">
                         <option value="Concluido">Concluído</option>
                         <option value="Em andamento">Em andamento</option>
                     </select>
@@ -172,14 +162,14 @@
             <h1 class="text-3xl">Ferramentas</h1>
             <div class="flex justify-cente">
                 <div class="flex flex-wrap flex-col w-full h-28">
-                    <div v-for="(ferramenta, index) in ferramentas" :key="index" class="mr-10">
-                        <input class="mr-1 cursor-pointer" type="checkbox" :name="ferramenta" :id="ferramenta" :value="ferramenta" v-model="ferramentasUsadas">
+                    <div v-for="(ferramenta, index) in ferramentasDisponiveis" :key="index" class="mr-10">
+                        <input class="mr-1 cursor-pointer" type="checkbox" :name="ferramenta" :id="ferramenta" :value="ferramenta" v-model="ferramentas">
                         <label :for="ferramenta">{{ ferramenta }}</label>
                     </div>
                 </div>
             </div>
             <div class="inputContaine">
-                <textarea required class="resize-none w-full h-32 block mt-3 bg-transparent border-2 p-2 placeholder:text-black outline-none" name="descricao" id="descricao" placeholder="Informe o conteúdo"></textarea>
+                <textarea required class="resize-none w-full h-32 block mt-3 bg-transparent border-2 p-2 placeholder:text-black outline-none" name="descricao" id="descricao" placeholder="Informe o conteúdo" v-model="descricao"></textarea>
             </div>
             <div class="flex justify-center mt-5 relative">
                 <button class="bg-blue-600 text-white tex w-2/3 h-14 uppercase font-semibold hover:bg-blue-800">Criar postagem</button>
