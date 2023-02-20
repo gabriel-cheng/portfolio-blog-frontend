@@ -168,9 +168,9 @@
     }
 
     function closeModal() {
+        const form = (document.querySelector("#postForm") as HTMLFormElement);
+        form.reset();
         openModal();
-
-        location.reload();
 
         return;
     }
@@ -187,9 +187,6 @@
                     }
                 })
                 .then(e => e.json())
-                .then((e) => {
-                    console.log(e);
-                });
 
                 location.reload();
             } catch(err) {
