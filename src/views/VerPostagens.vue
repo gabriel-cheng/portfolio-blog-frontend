@@ -1,6 +1,5 @@
 <script lang="ts" setup>
     import { ref, onMounted } from 'vue';
-    const ferramentasUsadas = ref([]);
     const allPosts = ref<Array<iPostAttributes>>([]);
     const token = sessionStorage.getItem("token");
     let postId = "";
@@ -72,10 +71,11 @@
         const repositorio = (document.querySelector("#repositorio") as HTMLInputElement).value;
         const status = (document.querySelector("#status") as HTMLSelectElement).value;
         const descricao = (document.querySelector("#descricao") as HTMLTextAreaElement).value;
-        const form = (document.querySelector("#postForm") as HTMLFormElement);
+        const file = (document.querySelector("#file") as HTMLInputElement).files;
         const post = allPosts.value.find(el => el._id == postId);
         const arr = [];
         const toolsUpdated: string[] = [];
+        const formData = new FormData();
 
         if (!post) {
             throw new Error("Post não encontrado");
@@ -87,27 +87,34 @@
 
         arr.filter(el => el.checked == true).forEach(el => toolsUpdated.push(el.value));
 
+        formData.append("titulo", titulo);
+        for (let i = 0; i < toolsUpdated.length; i++) {
+            formData.append('ferramentas[]', toolsUpdated[i]);
+        }
+        formData.append("status", status);
+        formData.append("videoUrl", video);
+        formData.append("descricao", descricao);
+        formData.append("deploy", deploy);
+        formData.append("repositorio", repositorio);
+        formData.append("postLinkedin", linkedin);
+
+        if(file) {
+            formData.append("file", file[0]);
+        }
+
         try {
             await fetch(`http://localhost:5000/posts/update/${post._id}`, {
                 method: "PATCH",
                 headers: {
-                    "Content-Type": "application/json",
                     authorization: `bearer ${token}`
                 },
-                body: JSON.stringify({
-                    titulo: titulo,
-                    ferramentas: toolsUpdated,
-                    status: status,
-                    videoUrl: video,
-                    descricao: descricao,
-                    deploy: deploy,
-                    repositorio: repositorio,
-                    postLinkedin: linkedin
-                })
+                body: formData
             })
-            .then(e => e.json());
+            .then(e => e.json())
+            .then((e) => alert(e.message));
 
-            form.reset();
+            closeModal();
+            location.reload();
         } catch(err) {
             console.log({update_post_err: err});
         }
