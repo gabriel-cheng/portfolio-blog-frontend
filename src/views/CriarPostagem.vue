@@ -49,7 +49,6 @@
             return;
         }
 
-
         formData.append("titulo", titulo.value);
         ferramentas.value.forEach(el => formData.append("ferramentas", el));
         formData.append("status", status.value);
