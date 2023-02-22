@@ -266,8 +266,8 @@
                                         <label for="">Status</label>
                                         <select name="status" id="status" class="border-b-2 h-8 px-4 cursor-pointer bg-transparent outline-none">
                                             <option selected>-</option>
-                                            <option value="Concluido">Concluído</option>
-                                            <option value="Em andamento">Em andamento</option>
+                                            <option value="Concluido">Concluido</option>
+                                            <option value="Em desenvolvimento">Em desenvolvimento</option>
                                         </select>
                                     </div>
                                 </div>

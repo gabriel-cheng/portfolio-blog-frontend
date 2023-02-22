@@ -153,7 +153,7 @@
                 <div class="flex w-full justify-between">
                     <label for="">Status</label>
                     <select required name="status" id="status" class="border-b-2 h-8 px-4 cursor-pointer bg-transparent outline-none" v-model="status">
-                        <option value="Concluido">Concluído</option>
+                        <option value="Concluido">Concluido</option>
                         <option value="Em desenvolvimento">Em desenvolvimento</option>
                     </select>
                 </div>
