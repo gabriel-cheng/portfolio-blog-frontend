@@ -1,4 +1,7 @@
 <script setup lang="ts">
+    import { useRouter } from "vue-router";
+    const router = useRouter();
+
     async function authUser() {
         const username = (document.querySelector("#login") as HTMLInputElement).value;
         const password = (document.querySelector("#senha") as HTMLInputElement).value;
@@ -28,6 +31,9 @@
                 sessionStorage.setItem("token", token);
 
                 setPopupStyle(negativeStyles, positiveStyles);
+                setTimeout(() => {
+                    router.push("/");
+                }, 2000);
             } else setPopupStyle(positiveStyles, negativeStyles);
 
             showPopup();
