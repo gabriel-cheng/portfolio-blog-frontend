@@ -34,7 +34,7 @@
 
                 setPopupStyle(negativeStyles, positiveStyles);
                 setTimeout(() => {
-                    router.push("/");
+                    router.push("/ver-postagens");
                 }, 2000);
             } else setPopupStyle(positiveStyles, negativeStyles);
 
