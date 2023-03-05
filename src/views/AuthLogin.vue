@@ -1,6 +1,7 @@
 <script setup lang="ts">
     import { useRouter } from "vue-router";
     const router = useRouter();
+    const baseURL = import.meta.env.VITE_BASE_URL;
 
     async function authUser() {
         const username = (document.querySelector("#login") as HTMLInputElement).value;
@@ -15,7 +16,8 @@
         ];
 
         try {
-            const url = "http://localhost:5000/users/auth/login"
+            const url = `${baseURL}/users/auth/login`;
+
             const request = await fetch(url, {
                 method: "POST",
                 headers: {"Content-Type": "application/json"},

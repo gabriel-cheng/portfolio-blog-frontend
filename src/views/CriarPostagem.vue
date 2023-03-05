@@ -1,5 +1,6 @@
 <script lang="ts" setup>
     import { ref } from "vue";
+    const baseURL = import.meta.env.VITE_BASE_URL;
     const positiveStyles = [
         "bg-popupGreenBackground", "border-popupGreenBorder", "bg-popupGreenBorder",
         "pi-check", "text-popupGreenBorder", "Sucesso", "Postagem criada com sucesso!"
@@ -61,7 +62,7 @@
         formData.append("file", file[0]);
 
         try {
-            const request = await fetch('http://localhost:5000/posts/create', {
+            const request = await fetch(`${baseURL}/posts/create`, {
                 method: 'POST',
                 headers: {
                     "authorization": `bearer ${token}`

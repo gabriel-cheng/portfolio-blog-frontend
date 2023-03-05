@@ -1,5 +1,6 @@
 <script lang="ts" setup>
     import { ref, onMounted } from 'vue';
+    const baseURL = import.meta.env.VITE_BASE_URL;
     const allPosts = ref<Array<iPostAttributes>>([]);
     const token = sessionStorage.getItem("token");
     let postId = "";
@@ -43,7 +44,7 @@
         const nenhumaPostagem = (document.querySelector("#nenhumaPostagem") as HTMLDivElement);
 
         try {
-            const response = await fetch("http://localhost:5000/posts", {
+            const response = await fetch(`${baseURL}/posts`, {
                 method: "GET",
                 headers: {
                     authorization: `bearer ${token}`
@@ -103,7 +104,7 @@
         }
 
         try {
-            await fetch(`http://localhost:5000/posts/update/${post._id}`, {
+            await fetch(`${baseURL}/posts/update/${post._id}`, {
                 method: "PATCH",
                 headers: {
                     authorization: `bearer ${token}`
@@ -187,7 +188,7 @@
 
         if(confirmacao) {
             try {
-                await fetch(`http://localhost:5000/posts/delete/${id}`, {
+                await fetch(`${baseURL}/posts/delete/${id}`, {
                     method: "DELETE",
                     headers: {
                         authorization: `bearer ${token}`
